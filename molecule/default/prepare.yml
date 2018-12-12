@@ -1,7 +1,6 @@
 ---
-- name: Converge
+- name: Prepare
   hosts: all
-
   tasks:
   - name: install initscripts
     package:

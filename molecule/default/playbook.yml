@@ -1,12 +1,6 @@
 ---
 - name: Converge
   hosts: all
-  tasks:
-    - name: install initscripts
-      package:
-        name: initscripts
-        state: present
-      when: ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] == "6"
   roles:
     - role: ansible-springboot-demo
       vars:
