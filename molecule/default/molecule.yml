@@ -1,0 +1,30 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+
+lint:
+  name: yamllint
+platforms:
+  - name: centos6
+    image: centos:6
+  - name: centos7
+    image: centos:7
+    privileged: true
+    command: /sbin/init
+provisioner:
+  name: ansible
+  log: true
+  lint:
+    name: ansible-lint
+  playbooks:
+    prepare: prepare.yml
+    converge: playbook.yml
+scenario:
+  name: default
+verifier:
+  name: testinfra
+  enabled: true
+  lint:
+    name: flake8

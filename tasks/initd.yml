@@ -1,0 +1,11 @@
+---
+# Install init.d service
+
+- name: init.d specific vars
+  include_vars: centos6.yml
+
+- name: "install init.d service"
+  file:
+    name: "/etc/init.d/{{ service_name }}"
+    state: link
+    src: "{{ application_folder }}/{{ application_name }}.jar"

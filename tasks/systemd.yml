@@ -1,0 +1,12 @@
+---
+# Install service for centos 7
+
+- name: "install systemd service description"
+  template:
+    dest: "/etc/systemd/system/{{ service_name }}.service"
+    src: "application.service.j2"
+    mode: 0644
+  notify:
+    - reload systemd
+    - restart application
+  register: result

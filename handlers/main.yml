@@ -1,0 +1,12 @@
+---
+# handlers file for ansible-springboot-demo
+- name: restart application
+  service:
+    name: "{{ service_name }}"
+    state: restarted
+  listen: restart spring application
+
+- name: reload systemd
+  systemd:
+    daemon-reload: true
+  listen: reload systemd

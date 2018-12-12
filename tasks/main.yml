@@ -1,0 +1,54 @@
+---
+- name: fail if no application_name is defined
+  fail:
+    msg: application_name variable is mandatory
+  when: application_name == '' or not application_name
+
+# install java if needed
+- name: install_java
+  include: install_java.yml
+  when: install_java
+
+- name: "create {{ application_user }} user"
+  user:
+    name: "{{ application_user }}"
+    shell: "/sbin/nologin"
+    home: "{{ application_folder }}"
+
+- name: "download and install application"
+  get_url:
+    dest: "{{ application_folder }}/{{ application_name }}.jar"
+    checksum: "{{ application_sha }}"
+    url: "{{ application_url }}"
+    mode: 0755
+  notify: "restart application"
+
+- name: "create dirs"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ application_user }}"
+    mode: 0755
+  with_items:
+    - "{{ application_folder }}"
+    - "{{ log_folder }}"
+
+- name: init.d service
+  include_tasks: initd.yml
+  when: ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] == "6"
+
+- name: systemd service
+  include_tasks: systemd.yml
+  when: ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] == "7"
+
+- name: application configuration
+  template:
+    src: application.conf.j2
+    dest: "{{ application_folder }}/{{ application_name }}.conf"
+  notify: "restart application"
+
+- name: enable and autostart service
+  service:
+    name: "{{ service_name }}"
+    enabled: true
+    state: started

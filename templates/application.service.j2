@@ -1,0 +1,11 @@
+[Unit]
+Description={{ application_name }}
+After=syslog.target
+
+[Service]
+User={{ application_user }}
+ExecStart={{ application_folder }}/{{ application_name }}.jar
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

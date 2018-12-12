@@ -1,0 +1,5 @@
+---
+- name: install java package
+  package:
+    name: "{{ java_package }}"
+    update_cache: true

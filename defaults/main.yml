@@ -1,0 +1,16 @@
+---
+# defaults file for ansible-springboot-demo
+application_name:
+application_url:
+application_sha:
+
+install_java: true
+java_package: java-1.8.0-openjdk
+application_user: "{{ application_name }}"
+application_folder: "/opt/{{ application_name }}"
+service_name: "{{ application_name }}"
+log_folder: "{{ application_folder }}/logs"
+listen_port: 8080
+springboot_mode:
+xmx: 128m
+xms: 128m
